@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	
 )
 
 /**
@@ -67,15 +66,15 @@ I: progress=continue
 func mkTrackerFn(name string) func(bool, string) {
 
 	r := regexp.MustCompile("^out_time=(..:..)")
-	last_point := "";
+	last_point := ""
 
 	return func(stdin bool, line string) {
 		result_slice := r.FindAllStringSubmatch(line, -1)
 		if len(result_slice) == 1 {
 			now := result_slice[0][1]
-			if (now != last_point ) {
-				fmt.Printf("%s %s", name, now)		
-				last_point = now		
+			if now != last_point {
+				fmt.Printf("%s %s", name, now)
+				last_point = now
 			} else {
 				fmt.Printf(".")
 			}

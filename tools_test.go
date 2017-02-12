@@ -66,3 +66,25 @@ func assertSize(t *testing.T, spec string, expW int, expH int, myW int, myH int)
 		t.Errorf("Spec: %s - Expected (%d x %d) - got (%d x %d)", spec, expW, expH, myW, myH)
 	}
 }
+
+// ========================================================================
+
+func Test_destfile_byCase(t *testing.T) {
+
+	var filenameTests = []struct {
+		oldname   string
+		extension string
+		newname   string
+	}{
+		{"pippo.avi", ".avi", "pippo.avi.avi"},
+		{"pippo.mkv", ".avi", "pippo.avi"},
+		{"pippo.mp4", ".avi", "pippo.avi"},
+	}
+
+	for _, tst := range filenameTests {
+		newfile := destfile(tst.oldname, tst.extension)
+		if newfile != tst.newname {
+			t.Errorf("With ('%s', '%s') - expected '%s' - got '%s' ", tst.oldname, tst.extension, tst.newname, newfile)
+		}
+	}
+}
