@@ -40,24 +40,25 @@ func TestCurrStreamSize(t *testing.T) {
 	assertSize(t, "Stream size from string", 10, 20, w, h)
 }
 
-func TestResize_noResize(t *testing.T) {
-	w, h := normalizeStreamSize(640, 320, TST_MAXWIDTH, TST_BLOCK)
-	assertSize(t, "No resizing", 640, 320, w, h)
+// This form lets us assert a lot of cases.
+var resizingTests = []struct {
+	name string
+	w    int // in
+	h    int
+	ew   int // expected w
+	eh   int
+}{
+	{"no resize", 640, 320, 640, 320},
+	{"halved", 1280, 640, 640, 320},
+	{"8 boundary - small", 321, 224, 320, 224},
+	{"8 boundary - large", 327, 327, 328, 328},
 }
 
-func TestResize_halve(t *testing.T) {
-	w, h := normalizeStreamSize(1280, 640, TST_MAXWIDTH, TST_BLOCK)
-	assertSize(t, "Halved", 640, 320, w, h)
-}
-
-func TestResize_not_8_smaller(t *testing.T) {
-	w, h := normalizeStreamSize(321, 224, TST_MAXWIDTH, TST_BLOCK)
-	assertSize(t, "Not 8 s ", 320, 224, w, h)
-}
-
-func TestResize_not_8_bigger(t *testing.T) {
-	w, h := normalizeStreamSize(327, 327, TST_MAXWIDTH, TST_BLOCK)
-	assertSize(t, "Not 8 b", 328, 328, w, h)
+func TestResize_byCase(t *testing.T) {
+	for _, tst := range resizingTests {
+		w, h := normalizeStreamSize(tst.w, tst.h, TST_MAXWIDTH, TST_BLOCK)
+		assertSize(t, tst.name, tst.ew, tst.eh, w, h)
+	}
 }
 
 func assertSize(t *testing.T, spec string, expW int, expH int, myW int, myH int) {

@@ -5,6 +5,13 @@ This is a Golang rewrite of https://github.com/l3nz/toonverter
 
 ## Use
 
+	toonverter2 -s some.file.mkv info
+
+	toonverter2 -s some.file.mkv preview
+
+	toonverter2 -s some.file.mkv run
+
+
 
 ## Details
 
